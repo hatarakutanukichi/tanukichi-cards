@@ -689,7 +689,7 @@ async function getAIReading() {
   const left   = tanukiPos % 6 > 0 ? fullCards[tanukiPos - 1] : null;
   const right  = tanukiPos % 6 < 5 ? fullCards[tanukiPos + 1] : null;
   const corners = [fullCards[0], fullCards[5], fullCards[30], fullCards[35]];
-  const alien  = fullCards[36];
+  const alien  = CARDS[ALIEN_INDEX];
 
   const prompt = `あなたはたぬきちカードの宇宙人です。37枚のアクションカードが6×6グリッドに並んでいます。
 
@@ -722,6 +722,9 @@ async function getAIReading() {
     const data = await res.json();
     const text = data.content?.[0]?.text || 'うまく読み解けませんでした。時間をおいてお試しください。';
     aiResult.textContent = text;
+    // 宇宙人をめくる
+    const alienInner = document.querySelector('#alienCard div');
+    if (alienInner) alienInner.style.transform = 'rotateY(180deg)';
     aiBtn.textContent = '🌌 もう一度読み解く';
     aiBtn.disabled = false;
   } catch (e) {
