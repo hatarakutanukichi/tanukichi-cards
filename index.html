@@ -723,7 +723,7 @@ async function getAIReading() {
     const text = data.content?.[0]?.text || 'うまく読み解けませんでした。時間をおいてお試しください。';
     aiResult.textContent = text;
     // 宇宙人をめくる
-    const alienInner = document.querySelector('#alienCard div');
+    const alienInner = document.querySelector('#alienCard > div > div');
     if (alienInner) alienInner.style.transform = 'rotateY(180deg)';
     aiBtn.textContent = '🌌 もう一度読み解く';
     aiBtn.disabled = false;
