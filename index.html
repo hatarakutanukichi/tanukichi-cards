@@ -499,7 +499,7 @@ function drawSingle() {
       </div>`;
     next.drawFn(document.getElementById('svgS'));
   }
-  document.getElementById('singleHint').textContent = 'タップしてめくる';
+  document.getElementById('singleHint').textContent = 'カードをタップ';
 }
 
 function flipSingle() {
@@ -507,7 +507,7 @@ function flipSingle() {
   singleFlipped = !singleFlipped;
   document.getElementById('singleCard').classList.toggle('flipped', singleFlipped);
   document.getElementById('singleHint').textContent =
-    singleFlipped ? 'もう一度引くときはボタンを押して' : 'タップしてめくる';
+    singleFlipped ? 'もう一度引くときはカードを引くボタンを押して' : 'カードをタップ';
   if (singleFlipped) {
     document.getElementById('descBox').style.display = 'block';
     document.getElementById('descText').style.display = 'none';
