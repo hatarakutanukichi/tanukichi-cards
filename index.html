@@ -188,7 +188,7 @@ header p  { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; }
     </div>
   </div>
   <button class="btn" onclick="drawSingle()">カードを引く</button>
-  <p class="hint" id="singleHint">タップしてめくる</p>
+  <p class="hint" id="singleHint">カードをタップしてめくる</p>
   <div id="descBox" style="display:none; max-width:280px; margin-top:16px; text-align:center;">
     <button onclick="toggleDesc()" style="font-family:'Yomogi',cursive; font-size:0.75rem; letter-spacing:0.2em; background:transparent; border:1px solid #ccc; border-radius:20px; padding:6px 20px; cursor:pointer; color:#888; margin-bottom:12px;">解説を見る 📖</button>
     <p id="descText" style="display:none; font-family:'Yomogi',cursive; font-size:0.8rem; line-height:1.9; color:#444; letter-spacing:0.05em; text-align:left; padding:16px; background:#f9f9f9; border-radius:10px;"></p>
@@ -253,7 +253,7 @@ header p  { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; }
   <!-- 全展開コンテンツ（?unlocked=full） -->
   <div id="fullContent" style="display:none; width:100%; flex-direction:column; align-items:center;">
     <p style="font-size:0.75rem; color:#888; margin-bottom:16px; text-align:center; letter-spacing:0.05em; line-height:1.8;">
-      36枚を展開します。全部開くボタンを押してください。<br>全部開くと宇宙人に読み解いてもらうボタンが出てきます。<br>ボタンそ押すと宇宙人(AI)からメッセージが届きます。
+      36枚を展開します。全部開くボタンを押してください。<br>全部開くと宇宙人に読み解いてもらうボタンが出てきます。<br>ボタンを押すと宇宙人(AI)からメッセージが届きます。
     </p>
     <button class="btn" id="openAllBtn" onclick="openAllCards()" style="margin-bottom:16px;">全部開く</button>
     <div id="fullGrid" style="display:grid; grid-template-columns:repeat(6,1fr); gap:6px; width:100%; max-width:420px; margin-bottom:12px;"></div>
