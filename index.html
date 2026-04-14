@@ -173,7 +173,7 @@ header p  { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; }
 }
 .btn-paid:hover { background: #333; transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #222; }
 </style>
-</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script></head>
 <body>
 
 <header>
@@ -274,6 +274,10 @@ header p  { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; }
     <button class="btn" onclick="drawFull()" style="margin-bottom:8px;">引き直す</button>
     <button class="btn" id="aiBtn" onclick="getAIReading()" style="margin-bottom:8px; background:#1a1a1a; color:#c8a951; display:none;">🌌 宇宙人に読み解いてもらう</button>
     <div id="aiResult" style="display:none; max-width:360px; margin:16px auto; padding:16px; background:#f9f9f9; border-radius:12px; font-family:'Yomogi',cursive; font-size:0.8rem; line-height:2; color:#444; text-align:left;"></div>
+    <button id="savePdfJpBtn" onclick="saveReadingPDF()" style="display:none;margin-top:12px;background:#C9A84C;color:#1A1612;border:none;font-size:12px;letter-spacing:0.2em;padding:12px 28px;cursor:pointer;">
+  ✦ PDF保存 ✦
+</button>
+
     <p style="font-size:0.6rem; color:#bbb; margin-top:8px; letter-spacing:0.05em; text-align:center; line-height:1.6;">
       ※AI稼働状況により時間がかかる場合があります。時間をおいてお試しください。<br>
       ※URLは予告なく変更・閉鎖する場合があります
@@ -685,7 +689,7 @@ async function getAIReading() {
   aiBtn.disabled = true;
   aiResult.style.display = 'block';
   aiResult.textContent = '宇宙人が全体を読み解いています...';
-
+document.getElementById('savePdfJpBtn').style.display = 'block';
   // たぬきの位置を特定
   let tanukiPos = -1;
   fullCards.forEach((card, i) => {
@@ -743,6 +747,48 @@ async function getAIReading() {
     aiBtn.textContent = '🌌 宇宙人に読み解いてもらう';
     aiBtn.disabled = false;
   }
+}
+async function saveReadingPDF() {
+  const btn = document.getElementById('savePdfJpBtn');
+  btn.textContent = '生成中...';
+  btn.disabled = true;
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const W = 210, margin = 18;
+  let y = margin;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(150, 120, 50);
+  doc.text('TANUKICHI ACTION ORACLE CARDS', W/2, y, { align: 'center' });
+  y += 7;
+
+  const today = new Date().toLocaleDateString('ja-JP', {year:'numeric', month:'long', day:'numeric'});
+  doc.setFontSize(8);
+  doc.setTextColor(100, 80, 50);
+  doc.text(today, W/2, y, { align: 'center' });
+  y += 8;
+
+  doc.setDrawColor(201, 168, 76);
+  doc.setLineWidth(0.3);
+  doc.line(margin, y, W - margin, y);
+  y += 8;
+
+  doc.setFontSize(13);
+  doc.setTextColor(30, 22, 18);
+  doc.text('AI Reading', W/2, y, { align: 'center' });
+  y += 8;
+
+  const readingText = document.getElementById('aiResult').innerText.trim();
+  doc.setFontSize(9);
+  doc.setTextColor(50, 40, 30);
+  const lines = doc.splitTextToSize(readingText, W - margin * 2);
+  doc.text(lines, margin, y);
+
+  doc.save('tanukichi-reading-' + new Date().toISOString().slice(0,10) + '.pdf');
+  btn.disabled = false;
+  btn.innerHTML = '✦ PDF保存 ✦';
 }
 
 function shuffle(arr) {
