@@ -173,7 +173,8 @@ header p  { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; }
 }
 .btn-paid:hover { background: #333; transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #222; }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script></head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
 <body>
 
 <header>
@@ -750,46 +751,26 @@ document.getElementById('savePdfJpBtn').style.display = 'block';
 }
 async function saveReadingPDF() {
   const btn = document.getElementById('savePdfJpBtn');
-  btn.textContent = '生成中...';
   btn.disabled = true;
+  btn.textContent = '保存中...';
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const W = 210, margin = 18;
-  let y = margin;
+  const target = document.getElementById('aiResult');
+  const canvas = await html2canvas(target, {
+    backgroundColor: '#ffffff',
+    scale: 2,
+    useCORS: true,
+    allowTaint: true
+  });
 
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(150, 120, 50);
-  doc.text('TANUKICHI ACTION ORACLE CARDS', W/2, y, { align: 'center' });
-  y += 7;
+  const link = document.createElement('a');
+  link.download = 'tanukichi-reading-' + new Date().toISOString().slice(0,10) + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
 
-  const today = new Date().toLocaleDateString('ja-JP', {year:'numeric', month:'long', day:'numeric'});
-  doc.setFontSize(8);
-  doc.setTextColor(100, 80, 50);
-  doc.text(today, W/2, y, { align: 'center' });
-  y += 8;
-
-  doc.setDrawColor(201, 168, 76);
-  doc.setLineWidth(0.3);
-  doc.line(margin, y, W - margin, y);
-  y += 8;
-
-  doc.setFontSize(13);
-  doc.setTextColor(30, 22, 18);
-  doc.text('AI Reading', W/2, y, { align: 'center' });
-  y += 8;
-
-  const readingText = document.getElementById('aiResult').innerText.trim();
-  doc.setFontSize(9);
-  doc.setTextColor(50, 40, 30);
-  const lines = doc.splitTextToSize(readingText, W - margin * 2);
-  doc.text(lines, margin, y);
-
-  doc.save('tanukichi-reading-' + new Date().toISOString().slice(0,10) + '.pdf');
   btn.disabled = false;
-  btn.innerHTML = '✦ PDF保存 ✦';
+  btn.innerHTML = '✦ PNG保存 ✦';
 }
+
 
 function shuffle(arr) {
   for (let i=arr.length-1;i>0;i--) {
